@@ -1,0 +1,5 @@
+third_party/googletest/*
+third_party/cpp_httplib/*
+third_party/json/*
+.cache/
+build/
