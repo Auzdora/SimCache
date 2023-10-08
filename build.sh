@@ -10,9 +10,3 @@ cd build
 cmake ..
 make -j$(nproc)
 make install
-
-cd ..
-cd ..
-cd ..
-cd build
-make -j$(nproc)
