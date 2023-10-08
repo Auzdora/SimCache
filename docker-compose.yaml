@@ -1,0 +1,14 @@
+version: '3'
+services:
+  cache_server_1:
+    image: sdcs
+    ports:
+      - "9527:9527"
+  cache_server_2:
+    image: sdcs
+    ports:
+      - "9528:9527"
+  cache_server_3:
+    image: sdcs
+    ports:
+      - "9529:9527"
