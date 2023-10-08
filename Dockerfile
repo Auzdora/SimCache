@@ -11,3 +11,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     libssl-dev
+
+
+# NOTE: this is only used in final test environment
+# COPY ./build/bin/simcache-server /myapp/simcache-server
+
+# # ENTRYPOINT
+# ENTRYPOINT ["/myapp/simcache-server"]
