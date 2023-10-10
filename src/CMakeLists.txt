@@ -1,9 +1,11 @@
 add_subdirectory(server)
+add_subdirectory(store)
 
 add_library(simcache STATIC ${ALL_OBJECT_FILES})
 
 set(CACHE_LIBS
 simcache_server
+simcache_storage
         )
 
 target_link_libraries(
