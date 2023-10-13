@@ -3,6 +3,7 @@ add_library(
         OBJECT
         server.cpp
         router.cpp
+        rpc_stub.cpp
 )
 
 set(ALL_OBJECT_FILES

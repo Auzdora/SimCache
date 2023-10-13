@@ -2,6 +2,7 @@
 #include <json/include/nlohmann/json.hpp>
 #include <string>
 #include "server/router.h"
+#include <rpc/include/rest_rpc.hpp>
 
 namespace SimCache {
 
@@ -17,14 +18,29 @@ public:
    * @brief Launch the server
    */
    void Start() { 
-    router_.Route(server_);
-    server_.listen(host_, port_);
+    // Start HTTP server in one thread
+    std::thread http_thread([&]() {
+      std::cout << "run http server" << std::endl;
+        router_.Route(server_);
+        server_.listen(host_.c_str(), port_);
+    });
+
+    // Start gRPC server in another thread
+    std::thread rpc_thread([&]() {
+      std::cout << "run rpc server" << std::endl;
+        rpc_server_.run();
+    });
+
+    http_thread.join();
+    rpc_thread.join();
   }
 
   /**
    * @brief Shut down the server
    */
-   void Stop() { server_.stop(); }
+   void Stop() {
+    server_.stop();
+   }
 
   /**
    * Helper functions
@@ -43,6 +59,7 @@ private:
    * @return null
    */
   void InitRouter();
+  void InitGRPCServer();  // function to initialize gRPC server
 
   /**
    * @brief Handle the get key-value pair request
@@ -76,10 +93,15 @@ private:
    */
   static void Delete(const httplib::Request& req, httplib::Response& res);
 
+  static auto resolve_hostname_to_ip(const std::string& hostname) -> std::string;
+
   std::string host_;
   int port_;
   httplib::Server server_;
+  rest_rpc::rpc_service::rpc_server rpc_server_;
   Router router_;
+  int self_token_;   // indicate current server number
+  int server_nums_;  // indicate how many other servers exist in network
 };
 
 } // namespace SimCache

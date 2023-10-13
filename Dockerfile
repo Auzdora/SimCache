@@ -10,11 +10,15 @@ RUN apt-get update && apt-get install -y \
     cmake \
     curl \
     git \
-    libssl-dev
+    libssl-dev \
+    libsystemd-dev \
+    libmsgpack-dev \
+    libasio-dev \
+    libboost-all-dev
 
 
 # NOTE: this is only used in final test environment
-# COPY ./build/bin/simcache-server /myapp/simcache-server
+COPY ./build/bin/simcache-server /myapp/simcache-server
 
 # # ENTRYPOINT
-# ENTRYPOINT ["/myapp/simcache-server"]
+ENTRYPOINT ["/myapp/simcache-server"]

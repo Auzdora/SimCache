@@ -43,13 +43,24 @@ if(NOT EXISTS "${JSON_ROOT}")
   execute_process(
     COMMAND git clone https://github.com/nlohmann/json.git ${JSON_ROOT}
   )
-  message("jsonsssssss")
   # Change into the cloned directory, create a build directory, and build and install the library
   execute_process(
     COMMAND ${CMAKE_SOURCE_DIR}/build.sh
   )
   message("done")
 endif()
+
+# Check if nlohmann json exists in the third_party directory
+set(RPC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/rpc")
+
+if(NOT EXISTS "${RPC_ROOT}")
+  # Clone Google Test into third_party directory if it doesn't exist
+  execute_process(
+    COMMAND git clone https://github.com/qicosmos/rest_rpc ${RPC_ROOT}
+  )
+endif()
+
+find_package(Boost)
 
 # #####################################################################################################################
 # COMPILER SETUP
@@ -59,7 +70,7 @@ message("Build mode: ${CMAKE_BUILD_TYPE}")
 
 # Compiler flags.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-parameter -Wno-attributes")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-parameter -Wno-attributes -Wno-unused-variable -Wno-missing-field-initializers")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -ggdb -fno-omit-frame-pointer -fno-optimize-sibling-calls")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

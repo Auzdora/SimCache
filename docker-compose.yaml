@@ -1,14 +1,23 @@
 version: '3'
 services:
-  cache_server_1:
-    image: sdcs
+  cache_server_0:
+    image: sdcs_test
     ports:
       - "9527:9527"
-  cache_server_2:
-    image: sdcs
+    environment:
+      - ME=0
+      - OTHERS=2
+  cache_server_1:
+    image: sdcs_test
     ports:
       - "9528:9527"
-  cache_server_3:
-    image: sdcs
+    environment:
+      - ME=1
+      - OTHERS=2
+  cache_server_2:
+    image: sdcs_test
     ports:
       - "9529:9527"
+    environment:
+      - ME=2
+      - OTHERS=2
