@@ -93,6 +93,17 @@ private:
    */
   static void Delete(const httplib::Request& req, httplib::Response& res);
 
+  /**
+   * @brief Add DNS sovler
+   *
+   * SimCache use simple rpc framework, which is rest_rpc.
+   * https://github.com/qicosmos/rest_rpc
+   * But rest rpc does not support automatic DNS solving.
+   * The method defined here as a helper function.
+   *
+   * @param hostname the name of host, not ip address
+   * @return the corresponding ip address based on the name of host
+   */
   static auto resolve_hostname_to_ip(const std::string& hostname) -> std::string;
 
   std::string host_;

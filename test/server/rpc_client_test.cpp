@@ -22,8 +22,6 @@ TEST(RPCTEST, ClientTest) {
         }
         std::cout << "IP address: " << ipstr << std::endl;
     }
-    // 如果解析成功，你可以在`result`中找到IP地址。
-    // 如果在Docker环境中运行，通常你可以用主机名直接通信，而无需这一步。
 	std::cout << "final is " << ipstr << std::endl;
 	rest_rpc::rpc_client client(ipstr, 9000);
 	client.connect();
