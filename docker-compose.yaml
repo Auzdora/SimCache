@@ -6,18 +6,18 @@ services:
       - "9527:9527"
     environment:
       - ME=0
-      - OTHERS=2
+      - TOTAL=3
   cache_server_1:
     image: sdcs_test
     ports:
       - "9528:9527"
     environment:
       - ME=1
-      - OTHERS=2
+      - TOTAL=3
   cache_server_2:
     image: sdcs_test
     ports:
       - "9529:9527"
     environment:
       - ME=2
-      - OTHERS=2
+      - TOTAL=3

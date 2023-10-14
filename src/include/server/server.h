@@ -3,6 +3,8 @@
 #include <string>
 #include "server/router.h"
 #include <rpc/include/rest_rpc.hpp>
+// #include <cache/cache_manager.h>
+#include <cache/single_cache_manager.h>
 
 namespace SimCache {
 
@@ -69,7 +71,7 @@ private:
    * @param null
    * @return null
    */
-  static void GetValue(const httplib::Request& req, httplib::Response& res);
+  void GetValue(const httplib::Request& req, httplib::Response& res);
 
   /**
    * @brief Handle the post key-value pair request
@@ -80,7 +82,7 @@ private:
    * @param null
    * @return null
    */
-  static void InsertOrUpdate(const httplib::Request& req, httplib::Response& res);
+  void InsertOrUpdate(const httplib::Request& req, httplib::Response& res);
 
   /**
    * @brief Handle the delete key-value pair request
@@ -91,26 +93,14 @@ private:
    * @param null
    * @return null
    */
-  static void Delete(const httplib::Request& req, httplib::Response& res);
-
-  /**
-   * @brief Add DNS sovler
-   *
-   * SimCache use simple rpc framework, which is rest_rpc.
-   * https://github.com/qicosmos/rest_rpc
-   * But rest rpc does not support automatic DNS solving.
-   * The method defined here as a helper function.
-   *
-   * @param hostname the name of host, not ip address
-   * @return the corresponding ip address based on the name of host
-   */
-  static auto resolve_hostname_to_ip(const std::string& hostname) -> std::string;
+  void Delete(const httplib::Request& req, httplib::Response& res);
 
   std::string host_;
   int port_;
   httplib::Server server_;
   rest_rpc::rpc_service::rpc_server rpc_server_;
   Router router_;
+  SingleCacheManager single_cache_manager_;
   int self_token_;   // indicate current server number
   int server_nums_;  // indicate how many other servers exist in network
 };

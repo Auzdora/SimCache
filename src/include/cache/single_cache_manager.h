@@ -10,11 +10,11 @@ namespace SimCache {
  * For now, CaccheManager only handles string key and string value
  */
 
-class CacheManager {
+class SingleCacheManager {
 public:
-  explicit CacheManager(int host_no, int host_num,
+  explicit SingleCacheManager(
                         int rpc_port=9000, std::string host_name_prefix = "cache_server_");
-  ~CacheManager() = default;
+  ~SingleCacheManager() = default;
   /**
    * @brief Insert the key value pair into memory cache
    *
@@ -57,53 +57,9 @@ public:
   auto Delete(std::string key, std::string &value) -> bool;
 
 private:
-  /**
-   * @brief Hash function
-   *
-   * To compute the destination server token
-   *
-   * @param null
-   * @return null
-   */
-  inline auto mod_hash(std::string key) -> int {
-    int num = get_key_num(key);
-    return num % host_num_;
-  }
-
-  /**
-   * @brief Parse the int number from the string key
-   *
-   * This function is helper function for mod_hash
-   *
-   * @param key string key
-   * @return num parsed from key
-   */
-  auto get_key_num(std::string key) -> int {
-    std::size_t pos = key.find('-');
-    if (pos == std::string::npos) {
-      throw std::invalid_argument("No number found in string key");
-    }
-    int num = std::stoi(key.substr(pos + 1));
-    return num;
-  }
-
-  /**
-   * @brief Add DNS sovler
-   *
-   * SimCache use simple rpc framework, which is rest_rpc.
-   * https://github.com/qicosmos/rest_rpc
-   * But rest rpc does not support automatic DNS solving.
-   * The method defined here as a helper function.
-   *
-   * @param hostname the name of host, not ip address
-   * @return the corresponding ip address based on the name of host
-   */
-  auto resolve_hostname_to_ip(const std::string &hostname) -> std::string;
 
   LocalStorageEngine<std::string, std::string>
       local_storage_engine_; // local sotarge engine
-  int host_no_;              // indicate the exclusive token of current server
-  int host_num_;             // indicate the number of servers
   int rpc_port_;             // rpc port
   std::string host_name_prefix_; // the prefix name of the hos
 };

@@ -28,9 +28,10 @@ auto LocalStorageEngine<Key, Value>::Delete(Key key, Value &value) -> bool {
   if (it != cache_.end()) {
     value = it->second;
     cache_.erase(it);
+    return true;
   }
   
-  return true;
+  return false;
 }
 
 template class LocalStorageEngine<int, int>;
