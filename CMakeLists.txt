@@ -43,11 +43,6 @@ if(NOT EXISTS "${JSON_ROOT}")
   execute_process(
     COMMAND git clone https://github.com/nlohmann/json.git ${JSON_ROOT}
   )
-  # Change into the cloned directory, create a build directory, and build and install the library
-  execute_process(
-    COMMAND ${CMAKE_SOURCE_DIR}/build.sh
-  )
-  message("done")
 endif()
 
 # Check if nlohmann json exists in the third_party directory
@@ -70,7 +65,7 @@ message("Build mode: ${CMAKE_BUILD_TYPE}")
 
 # Compiler flags.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-parameter -Wno-attributes -Wno-unused-variable -Wno-missing-field-initializers")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-parameter -Wno-attributes -Wno-unused-variable -Wno-missing-field-initializers -Wno-reorder")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -ggdb -fno-omit-frame-pointer -fno-optimize-sibling-calls")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

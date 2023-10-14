@@ -16,9 +16,23 @@ RUN apt-get update && apt-get install -y \
     libasio-dev \
     libboost-all-dev
 
+# Copy the source code into the image
+COPY . /myapp
 
-# NOTE: this is only used in final test environment
-COPY ./build/bin/simcache-server /myapp/simcache-server
+# Build the project
+WORKDIR /myapp
+RUN rm -rf build && mkdir build && cd build && cmake ..
+
+# Build the third-party json library
+WORKDIR /myapp/third_party/json
+RUN rm -rf build && mkdir build && cd build && cmake .. && make -j4 && make install
+
+# Build the project
+WORKDIR /myapp/build
+RUN make -j 4
+
+# # NOTE: this is only used in final test environment
+# COPY ./build/bin/simcache-server /myapp/simcache-server
 
 # # ENTRYPOINT
-ENTRYPOINT ["/myapp/simcache-server"]
+ENTRYPOINT ["/myapp/build/bin/simcache-server"]
