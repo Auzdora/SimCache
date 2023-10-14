@@ -1,5 +1,6 @@
 #include <unordered_map>
 
+#pragma once
 namespace SimCache {
 
 template <typename Key, typename Value>

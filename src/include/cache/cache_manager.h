@@ -3,6 +3,8 @@
 #include <rpc/include/rest_rpc.hpp>
 #include <stdexcept>
 
+#pragma once
+
 namespace SimCache {
 
 /** TODO: consider add template coding technique to let
@@ -12,9 +14,12 @@ namespace SimCache {
 
 class CacheManager {
 public:
-  explicit CacheManager(int host_no, int host_num,
+  explicit CacheManager(
                         int rpc_port=9000, std::string host_name_prefix = "cache_server_");
   ~CacheManager() = default;
+
+  void SetHostNo(int host_no) { host_no_ = host_no; }
+  void SetHostNum(int host_num) {host_num_ = host_num; }
   /**
    * @brief Insert the key value pair into memory cache
    *

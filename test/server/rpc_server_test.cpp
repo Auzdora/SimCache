@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "server/server.h"
+#include "server/rpc_stub.h"
 #include <rpc/include/rest_rpc.hpp>
 
 //1.先定义person对象
@@ -24,9 +24,10 @@ person get_person(rest_rpc::rpc_service::rpc_conn conn) {
 
 TEST(RPCTEST, SimpleTest) {
 	rest_rpc::rpc_service::rpc_server server(9000, std::thread::hardware_concurrency());
+    SimCache::RPCStub rpc_stub(&server);
 
-	dummy d;
-	server.register_handler("add", &dummy::add, &d);
+	// dummy d;
+	// server.register_handler("add", &dummy::add, &d);
 	
 	server.run();
 }

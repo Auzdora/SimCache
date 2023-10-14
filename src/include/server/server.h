@@ -3,8 +3,9 @@
 #include <string>
 #include "server/router.h"
 #include <rpc/include/rest_rpc.hpp>
-// #include <cache/cache_manager.h>
+#include <cache/cache_manager.h>
 #include <cache/single_cache_manager.h>
+#include "server/rpc_stub.h"
 
 namespace SimCache {
 
@@ -99,8 +100,9 @@ private:
   int port_;
   httplib::Server server_;
   rest_rpc::rpc_service::rpc_server rpc_server_;
+  CacheManager cache_manager_;
+  RPCStub rpc_stub_;
   Router router_;
-  SingleCacheManager single_cache_manager_;
   int self_token_;   // indicate current server number
   int server_nums_;  // indicate how many other servers exist in network
 };

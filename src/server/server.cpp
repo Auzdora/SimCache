@@ -11,7 +11,7 @@ int add(rest_rpc::rpc_service::rpc_conn conn, int a, int b) {
 }
 
 CacheServer::CacheServer(const std::string &host, int port)
-    : host_(host), port_(port), server_(), rpc_server_(9000, 2), single_cache_manager_() {
+    : host_(host), port_(port), server_(), rpc_server_(9000, 2), cache_manager_(), rpc_stub_(&rpc_server_, &cache_manager_) {
   InitRouter();
   rpc_server_.register_handler("add", add);
 
@@ -20,12 +20,14 @@ CacheServer::CacheServer(const std::string &host, int port)
     std::string str_me = me;
     self_token_ = std::stoi(str_me);
     std::cout << "server token: " << self_token_ << std::endl;
+    cache_manager_.SetHostNo(self_token_);
   }
   const char* total = std::getenv("TOTAL");
   if (total) {
     std::string str_total = total;
     server_nums_ = std::stoi(str_total);
     std::cout << "system total server number: " << server_nums_ << std::endl;
+    cache_manager_.SetHostNum(server_nums_);
   }
 
 }
@@ -34,7 +36,7 @@ CacheServer::CacheServer(const std::string &host, int port)
 void CacheServer::GetValue(const httplib::Request& req, httplib::Response& res) {
   std::string key = req.matches[1];
   std::string val;
-  bool ans = single_cache_manager_.Find(key, val);
+  bool ans = cache_manager_.Find(key, val);
   if (!ans) {
     res.status = 404;
     return;
@@ -51,7 +53,7 @@ void CacheServer::InsertOrUpdate(const httplib::Request& req, httplib::Response&
   auto json = nlohmann::json::parse(req.body);
   for (auto& [key, value] : json.items()) {
     std::cout << "key " << key << " value " << value << std::endl;
-    single_cache_manager_.Insert(key, value);
+    cache_manager_.Insert(key, value);
   }
   res.set_content(json.dump() + "\n", "application/json");
 }
@@ -60,7 +62,7 @@ void CacheServer::Delete(const httplib::Request& req, httplib::Response& res) {
   // define delete post and corresponding logic
   std::string key = req.matches[1];
   std::string val;
-  bool ans = single_cache_manager_.Delete(key, val);
+  bool ans = cache_manager_.Delete(key, val);
   if (ans) {
     std::cout << "delete!" << std::endl;
     res.set_content("1\n", "text/plain");

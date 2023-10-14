@@ -1,11 +1,12 @@
 #include "cache/cache_manager.h"
 #include <stdexcept>
+#include "server/rpc_stub.h"
 
 namespace SimCache {
 
-CacheManager::CacheManager(int host_no, int host_num, int rpc_port,
+CacheManager::CacheManager(int rpc_port,
                            std::string host_name_prefix)
-    : host_no_(host_no), host_num_(host_num), rpc_port_(rpc_port),
+    : rpc_port_(rpc_port),
       host_name_prefix_(host_name_prefix) {}
 
 auto CacheManager::Insert(std::string key, std::string value) -> bool {
@@ -28,7 +29,8 @@ auto CacheManager::Insert(std::string key, std::string value) -> bool {
   }
 
   // call rpc insert method
-  return true;
+  bool ans = client.call<bool>("Insert", key, value);
+  return ans;
 }
 
 auto CacheManager::Find(std::string key, std::string &value) -> bool {
@@ -51,7 +53,9 @@ auto CacheManager::Find(std::string key, std::string &value) -> bool {
   }
 
   // call rpc find method
-  return true;
+  Result result = client.call<Result>("Find", key);
+  value = result.val;
+  return result.ans;
 }
 
 auto CacheManager::Delete(std::string key, std::string &value) -> bool {
@@ -73,8 +77,10 @@ auto CacheManager::Delete(std::string key, std::string &value) -> bool {
     throw std::runtime_error("connect failed");
   }
 
-  // call rpc find method
-  return true;
+  // call rpc delete method
+  Result result = client.call<Result>("Delete", key);
+  value = result.val;
+  return result.ans;
 }
 
 auto CacheManager::resolve_hostname_to_ip(const std::string &hostname)
