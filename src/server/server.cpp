@@ -65,9 +65,11 @@ void CacheServer::Delete(const httplib::Request& req, httplib::Response& res) {
   bool ans = cache_manager_.Delete(key, val);
   if (ans) {
     std::cout << "delete!" << std::endl;
+    res.status = 200;
     res.set_content("1\n", "text/plain");
   } else {
     std::cout << "not delete" << std::endl;
+    res.status = 200;
     res.set_content("0\n", "text/plain");
   }
 }
