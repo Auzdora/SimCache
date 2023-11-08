@@ -17,8 +17,8 @@ endif()
 
 # Check if Google Test exists in the third_party directory
 set(GTEST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/googletest")
-
-if(NOT EXISTS "${GTEST_ROOT}")
+file(GLOB GTEST_CONTENTS "${GTEST_ROOT}/*")
+if(NOT EXISTS "${GTEST_ROOT}" OR GTEST_CONTENTS STREQUAL "")
   # Clone Google Test into third_party directory if it doesn't exist
   execute_process(
     COMMAND git clone https://github.com/google/googletest.git ${GTEST_ROOT}
@@ -27,8 +27,8 @@ endif()
 
 # Check if cpp-httplib exists in the third_party directory
 set(HTTPLIB_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp_httplib")
-
-if(NOT EXISTS "${HTTPLIB_ROOT}")
+file(GLOB HTTPLIB_CONTENTS "${HTTPLIB_ROOT}/*")
+if(NOT EXISTS "${HTTPLIB_ROOT}" OR HTTPLIB_CONTENTS STREQUAL "")
   # Clone Google Test into third_party directory if it doesn't exist
   execute_process(
     COMMAND git clone https://github.com/yhirose/cpp-httplib.git ${HTTPLIB_ROOT}
@@ -37,8 +37,8 @@ endif()
 
 # Check if nlohmann json exists in the third_party directory
 set(JSON_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/json")
-
-if(NOT EXISTS "${JSON_ROOT}")
+file(GLOB JSON_CONTENTS "${JSON_ROOT}/*")
+if(NOT EXISTS "${JSON_ROOT}" OR JSON_CONTENTS STREQUAL "")
   # Clone Google Test into third_party directory if it doesn't exist
   execute_process(
     COMMAND git clone https://github.com/nlohmann/json.git ${JSON_ROOT}
@@ -47,8 +47,8 @@ endif()
 
 # Check if nlohmann json exists in the third_party directory
 set(RPC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/rpc")
-
-if(NOT EXISTS "${RPC_ROOT}")
+file(GLOB RPC_CONTENTS "${RPC_ROOT}/*")
+if(NOT EXISTS "${RPC_ROOT}" OR RPC_CONTENTS STREQUAL "")
   # Clone Google Test into third_party directory if it doesn't exist
   execute_process(
     COMMAND git clone https://github.com/qicosmos/rest_rpc ${RPC_ROOT}
